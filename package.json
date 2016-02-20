@@ -8,6 +8,7 @@
       "lorem-ipsum": "1.0.3",
       "node-wikipedia": "0.0.2",
       "highland": "2.6.0",
-      "exectimer": "2.0.0"
+      "exectimer": "2.0.0",
+      "sync-request": "3.0.0"
   }
 }

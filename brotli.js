@@ -4,6 +4,7 @@ var brotliCompressSync = require('iltorb').compressSync;
 var lzmaCompress = require('lzma-native').compress;
 var zlib = require('zlib');
 var loremIpsum = require('lorem-ipsum');
+var request = require('sync-request');
 var _ = require("highland");
 var runningTests = {
     items: [],
@@ -43,7 +44,7 @@ function compressBrotli(prefix, text, t, myself) {
         new Buffer(text), {
             mode: 0,
             quality: 6, // this gets close results to deflate
-            lgwin: 22,
+            lgwin: 24,
             lgblock: 0
         });
     testResults.push(myself, t, prefix, text, result);
@@ -82,6 +83,12 @@ function waitForTests() {
 var loremText = loremIpsum({count: 10000});
 console.log("lorem text generated: %d", loremText.length);
 
+var cssText = request('GET', 'https://prezi-a.akamaihd.net/your-versioned/1166-45553d3942a0e45b984f115bbfcc112159f4c0cd/CACHE/css/8ab55e441066.css').getBody();
+console.log("css downloaded: %d", loremText.length);
+
+var jsText = request('GET', 'https://prezi-a.akamaihd.net/your-versioned/1166-45553d3942a0e45b984f115bbfcc112159f4c0cd/CACHE/js/5dac91d2f2f4.js').getBody();
+console.log("js downloaded: %d", loremText.length);
+
 var wikipedia = require("node-wikipedia");
 var wikipediaContent = "";
 wikipedia.page.data("Marthandavarma_(novel)", { content: true }, function(response) {
@@ -89,6 +96,9 @@ wikipedia.page.data("Marthandavarma_(novel)", { content: true }, function(respon
     console.log("wikipedia text fetched: %d", wikipediaContent.length);
     runAllCompressors([
         {"name": "lorem", "text": loremText},
-        {"name": "wikipedia", "text": wikipediaContent}]);
+        {"name": "wikipedia", "text": wikipediaContent},
+        {"name": "css", "text": cssText},
+        {"name": "js", "text": jsText}
+    ]);
     waitForTests();
 });
