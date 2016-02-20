@@ -1,0 +1,13 @@
+{
+  "name": "brotli-compression-test",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+      "iltorb": "1.0.9",
+      "lzma-native": "1.1.0",
+      "lorem-ipsum": "1.0.3",
+      "node-wikipedia": "0.0.2",
+      "highland": "2.6.0",
+      "exectimer": "2.0.0"
+  }
+}
