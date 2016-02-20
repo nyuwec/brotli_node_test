@@ -39,7 +39,13 @@ function compressLZMA(prefix, text, t, myself) {
 }
 
 function compressBrotli(prefix, text, t, myself) {
-    var result = brotliCompressSync(new Buffer(text));
+    var result = brotliCompressSync(
+        new Buffer(text), {
+            mode: 0,
+            quality: 6, // this gets close results to deflate
+            lgwin: 22,
+            lgblock: 0
+        });
     testResults.push(myself, t, prefix, text, result);
 }
 
@@ -54,7 +60,7 @@ function compressGZIP(prefix, text, t, myself) {
 }
 
 function runAllCompressors(arrText) {
-    var functions = [compressGZIP, compressDeflate, compressLZMA, compressBrotli];
+    var functions = [compressDeflate, compressBrotli, compressLZMA, compressGZIP];
     _(arrText).each(function(obj) {
         _(functions).each(function(func){
             runningTests.push(func.name, obj.name);
